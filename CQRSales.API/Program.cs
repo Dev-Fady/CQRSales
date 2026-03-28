@@ -1,4 +1,5 @@
 
+using CQRSales.API.Middelware;
 using CQRSales.Application;
 using CQRSales.Application.Features.Commands.CategoryCommands;
 using CQRSales.Application.Mapping;
@@ -8,6 +9,7 @@ using CQRSales.Infrastructure.Database;
 using CQRSales.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace CQRSales.API
@@ -31,7 +33,36 @@ namespace CQRSales.API
             });
             builder.Services.AddApplicationServices().
                             AddInfrastructureServices();
+            builder.Services.AddSwaggerGen(setupAction =>
+            {
+                // Security Definition
+                setupAction.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token.\r\n\r\nExample: \"Bearer 12345abcdef\""
+                });
 
+                // Security Requirement (apply globally)
+                setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -43,8 +74,9 @@ namespace CQRSales.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseMiddleware<GlobalExceptionHandle>();
 
             app.MapControllers();
 

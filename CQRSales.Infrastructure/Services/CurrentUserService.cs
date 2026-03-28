@@ -17,9 +17,11 @@ namespace CQRSales.Infrastructure.Services
         {
             _contextAccessor = contextAccessor;
         }
-        public string UserId { get => _contextAccessor.HttpContext.User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.NameIdentifier).Value; }
-        public string UserName { get => _contextAccessor.HttpContext.User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.Name).Value; }
-        public int? StockId { get => Convert.ToInt32(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(a => a.Type == "StocKId")?.Value); }
+        public string UserId => _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        public string UserName => _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+        public int? StockId => _contextAccessor.HttpContext?.User?.FindFirst("StocKId") != null
+                               ? Convert.ToInt32(_contextAccessor.HttpContext.User.FindFirst("StocKId").Value)
+                               : (int?)null;
         //public LanguageRequest Language
         //{
         //    get

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CQRSales.Application.Exceptions;
 using CQRSales.Application.Features.Dtos.Responses.CategoryResponses;
 using CQRSales.Domain.Interfaces;
 using CQRSales.Domain.Models;
@@ -32,7 +33,7 @@ namespace CQRSales.Application.Features.Queries.CategoryQueries
             var category = await _repository.GetByIDAsync(request.Id);
             if (category == null)
             {
-                return null;
+                 throw new NotFoundException();
             }
             return _mapper.Map<CategoryReadReponseDto>(category);
         }

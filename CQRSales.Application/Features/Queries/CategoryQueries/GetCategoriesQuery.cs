@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using CQRSales.Application.Extentions.Pagination;
 using CQRSales.Application.Features.Dtos.Responses.CategoryResponses;
 using CQRSales.Application.Mapping;
@@ -62,7 +62,9 @@ namespace CQRSales.Application.Features.Queries.CategoryQueries
                     NameEn = a.NameEn,
                     DescriptionAr = a.DescriptionAr,
                     DescriptionEn = a.DescriptionEn,
-                    IsArchived = a.IArchived
+                    IsArchived = a.IArchived,
+                    CreatedById = a.CreatedById,
+                    CreatedByName = a.CreatedByName
                 });
 
                 var result = await query.PaginateAsync(request.PageNumber, request.PageSize, cancellationToken);

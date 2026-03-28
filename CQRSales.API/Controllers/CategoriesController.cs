@@ -18,8 +18,9 @@ namespace CQRSales.API.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetByIDAsync(GetCategoryByIdQuery query)
+        public async Task<IActionResult> GetByIDAsync(int Id)
         {
+            var query = new GetCategoryByIdQuery { Id = Id };
             var result = await _mediator.Send(query);
             return Ok(result);
         }

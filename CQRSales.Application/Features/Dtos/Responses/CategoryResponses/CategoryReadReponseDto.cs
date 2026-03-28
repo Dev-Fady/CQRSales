@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,8 @@ namespace CQRSales.Application.Features.Dtos.Responses.CategoryResponses
         public string NameAr { get; set; }
         public string NameEn { get; set; }
         public string DescriptionAr { get; set; }
-        public string DescriptionEn { get; set; }
+        public string? DescriptionEn { get; set; }
+        public string? CreatedById { get; set; }
+        public string? CreatedByName { get; set; }
     }
 }

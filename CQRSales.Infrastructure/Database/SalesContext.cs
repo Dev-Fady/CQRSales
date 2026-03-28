@@ -21,7 +21,8 @@ namespace CQRSales.Infrastructure.Database
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<StockDetails> StockDetails { get; set; }
-        public SalesContext(DbContextOptions<SalesContext> options, ICurrentUserService currentUser) :
+        public SalesContext(DbContextOptions<SalesContext> options, ICurrentUserService currentUser
+                                                                    ) :
             base(options)
         {
             _currentUser = currentUser;
@@ -95,10 +96,6 @@ namespace CQRSales.Infrastructure.Database
                         entry.Entity.CreatedById = _currentUser.UserId;
                         entry.Entity.CreatedByName = _currentUser.UserName;
                         entry.Entity.CreatedDateTime = DateTime.UtcNow;
-
-                        entry.Entity.ModifiedById = _currentUser.UserId;
-                        entry.Entity.ModifiedByName = _currentUser.UserName;
-                        entry.Entity.ModifiedDateTime = DateTime.UtcNow;
                         break;
 
                     case EntityState.Modified:
